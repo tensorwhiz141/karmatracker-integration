@@ -1346,6 +1346,34 @@ async def get_user_analytics_endpoint(user_id: str):
             content={"error": f"Failed to get user analytics: {str(e)}", "user_id": user_id}
         )
 
+# ==== Karma Tracker Integration Endpoints ====
+
+@app.get("/karma/{user_id}")
+async def get_user_karma(user_id: str):
+    """Get user's current karma score"""
+    try:
+        karma_data = get_karma(user_id)
+        return JSONResponse(content=karma_data)
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={"error": f"Failed to get user karma: {str(e)}", "user_id": user_id}
+        )
+
+@app.post("/karma/update")
+async def update_user_karma(user_id: str, action_type: str, value: float, financial_profile: Optional[dict] = None):
+    """Update user's karma based on an action"""
+    try:
+        karma_data = update_karma(user_id, action_type, value, financial_profile)
+        # Emit karma updated event for Bucket consumption
+        emit_karma_updated_event(user_id, karma_data)
+        return JSONResponse(content=karma_data)
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={"error": f"Failed to update user karma: {str(e)}", "user_id": user_id}
+        )
+
 @app.post("/process-pdf", response_model=PDFResponse)
 async def process_pdf(file: UploadFile = File(...)):
     temp_pdf_path = ""

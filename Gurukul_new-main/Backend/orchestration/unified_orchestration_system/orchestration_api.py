@@ -24,6 +24,12 @@ from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 import google.generativeai as genai
 
+# Add this import for the Karma client
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Base_backend')))
+from karma_client import karma_client, update_karma, emit_karma_updated_event
+
 # LangChain imports
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -1178,6 +1184,19 @@ Make the activity:
             self.memory_manager.update_user_session(user_id, {
                 'educational_progress': educational_progress
             })
+
+            # NEW: Update Karma when user completes a learning task
+            if quiz_score is not None:
+                # User has completed a quiz/task, update their karma
+                karma_update = update_karma(
+                    user_id=user_id,
+                    action_type="completed_learning_task",
+                    value=quiz_score / 20.0,  # Scale score to karma value (0-5 for 0-100 quiz score)
+                    financial_profile=None
+                )
+                
+                # Emit karma updated event for Bucket to consume
+                emit_karma_updated_event(user_id, karma_update)
 
             response = {
                 "query_id": str(uuid.uuid4()),
