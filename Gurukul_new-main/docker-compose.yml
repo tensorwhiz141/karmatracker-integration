@@ -271,6 +271,25 @@ services:
       timeout: 10s
       retries: 3
 
+  # Karma Tracker Service
+  karma-tracker:
+    build:
+      context: ./Backend/karma_tracker
+      dockerfile: Dockerfile
+    container_name: gurukul-karma-tracker
+    restart: unless-stopped
+    ports:
+      - "8008:8005"
+    environment:
+      - PORT=8005
+    networks:
+      - gurukul-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
   # TTS Service
   tts-service:
     build:

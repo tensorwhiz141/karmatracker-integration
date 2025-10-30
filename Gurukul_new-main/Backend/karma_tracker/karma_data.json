@@ -1,0 +1,32 @@
+{
+  "integration_test_user_001": {
+    "karma_score": 15.0,
+    "last_update": "2025-10-27T16:51:38.519943",
+    "source_action": "direct_api_test"
+  },
+  "agent_workflow_user_001": {
+    "karma_score": 18.0,
+    "last_update": "2025-10-27T16:51:40.542460",
+    "source_action": "voice_interaction"
+  },
+  "test_user_001": {
+    "karma_score": 63.0,
+    "last_update": "2025-10-27T16:52:22.540093",
+    "source_action": "task_skipped"
+  },
+  "workflow_user_001": {
+    "karma_score": 25.0,
+    "last_update": "2025-10-27T16:52:14.331919",
+    "source_action": "seeded"
+  },
+  "test_user_002": {
+    "karma_score": 75.0,
+    "last_update": "2025-10-27T16:52:14.331917",
+    "source_action": "seeded"
+  },
+  "default_user": {
+    "karma_score": 10.0,
+    "last_update": "2025-10-27T16:52:14.331921",
+    "source_action": "seeded"
+  }
+}
